@@ -1,12 +1,8 @@
 import React, { Component } from "react";
 import { TextField, Paper } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form";
-import { addTodo } from "../../store/actions/addTodo";
-import Moment from "moment";
-import uuid from "uuid/v4";
-import { connect } from "react-redux";
 
-class TodoForm extends Component {
+class EditTodoForm extends Component {
   //text field//
   renderTextField = ({ label, input, meta: { touched, invalid, error }, ...custom }) => (
     <TextField
@@ -21,13 +17,10 @@ class TodoForm extends Component {
   );
   //submit//
   onFormSubmit = formValues => {
-    //req body//
-    const todo = {
-      id: uuid(),
-      todo: formValues.todo,
-      date: Moment().format()
-    };
-    this.props.addTodo(todo);
+    console.log(this.props.id, formValues.updatedTodo);
+    this.props.editTodo(this.props.id, formValues.updatedTodo);
+    this.props.reset();
+    this.props.toggleEditForm();
   };
   render() {
     const { handleSubmit } = this.props;
@@ -36,22 +29,14 @@ class TodoForm extends Component {
       <Paper style={{ margin: "1rem 0", padding: "0 1rem" }}>
         <form onSubmit={handleSubmit(this.onFormSubmit)}>
           <div>
-            <Field name='todo' component={this.renderTextField} label='Add Todo ...' />
+            <Field name='updatedTodo' component={this.renderTextField} label='Edit Todo ...' />
           </div>
-          <div></div>
         </form>
       </Paper>
     );
   }
 }
-const mapStateToProps = state => {
-  return { addTodo: state.addTodoReducer };
-};
-const withForm = reduxForm({
-  form: "reduxform"
-})(TodoForm);
 
-export default connect(
-  mapStateToProps,
-  { addTodo }
-)(withForm);
+export default reduxForm({
+  form: "editform"
+})(EditTodoForm);

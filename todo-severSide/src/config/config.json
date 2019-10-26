@@ -1,3 +1,4 @@
 {
-    "contextRoot":"todoApp"
+  "contextRoot": "todoApp",
+  "mongoURI": "mongodb+srv://dina:todotask@todoapp-tgnzs.mongodb.net/todos?retryWrites=true&w=majority"
 }
