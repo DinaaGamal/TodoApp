@@ -1,6 +1,9 @@
 import React from 'react';
 import { TextField, Paper, Button } from '@material-ui/core';
 import { Field, reduxForm } from 'redux-form';
+import { IconButton } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import {addTodo} from '../../store/actions/addTodo';
 
 const renderTextField = ({ label, input, meta: { touched, invalid, error }, ...custom }) => (
 	<TextField
@@ -16,8 +19,14 @@ const renderTextField = ({ label, input, meta: { touched, invalid, error }, ...c
 
 function TodoForm(props) {
 	const { handleSubmit, pristine, reset, submitting, classes } = props;
+	//new redux hooks for dispatch action 
+	const dispatch = useDispatch();
+	// useEffect(() => {
+	// }, []);
+
 	const onFormSubmit = (formValues) => {
-		console.log(formValues);
+		const res = dispatch(addTodo(formValues));
+		console.log(res);
 	};
 
 	return (

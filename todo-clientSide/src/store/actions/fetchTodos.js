@@ -4,7 +4,7 @@ import handleErrors from './handleErrors';
 
 export const fetchTodos = async (dispatch) => {
 	try {
-		const res = await axios.get('/urk');
+		const res = await axios.get('/todoApp/todos');
 		dispatch({ type: FETCH_TODOS, payload: res.data });
 	} catch (error) {
 		handleErrors(error);
