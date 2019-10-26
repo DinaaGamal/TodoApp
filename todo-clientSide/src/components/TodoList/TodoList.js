@@ -1,30 +1,32 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { PureComponent } from "react";
 import { fetchTodos } from "../../store/actions/fetchTodos";
 import TodoItem from "../TodoItem/TodoItem";
+import { connect } from "react-redux";
 
-function TodoList() {
-  const dispatch = useDispatch();
-
-  /////////////useEffect hook/ #component did mountreplacement////////////////
-  useEffect(() => {
-    getAllTodos();
-  }, []);
-
-  const getAllTodos = () => {
-    dispatch(fetchTodos());
+class TodoList extends PureComponent {
+  componentDidMount() {
+    this.props.fetchTodos();
+  }
+  renderList = () => {
+    console.log(this.props.todos);
+    return this.props.todos.length === 0 ? (
+      <div>loading</div>
+    ) : (
+      this.props.todos.map(todo => {
+        console.log(todo);
+        return <TodoItem todo={todo.todo} id={todo.id} date={todo.date} key={todo.id} />;
+      })
+    );
   };
-  /////////this expression instead of below one/////////////
-  // mapStateToProps = (state) => {
-  //  return {todos: state.fetchTodosReducer}
-  // }
-  const todos = useSelector(state => {
-    return state.fetchTodosReducer;
-  });
-
-  return todos.map(todo => {
-    return <TodoItem />;
-  });
+  render() {
+    return this.renderList();
+  }
 }
+const mapStateToProps = state => {
+  return { todos: state.fetchTodosReducer };
+};
 
-export default TodoList;
+export default connect(
+  mapStateToProps,
+  { fetchTodos }
+)(TodoList);
