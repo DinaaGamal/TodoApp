@@ -4,8 +4,8 @@ import handleErrors from "./handleErrors";
 
 export const deleteTodo = id => async dispatch => {
   try {
-    const res = await axios.delete(`http://localhost:5000/todoApp/todo/${id}`);
-    dispatch({ type: DELETE_TODO, payload: res.data });
+    await axios.delete(`http://localhost:5000/todoApp/todo/${id}`);
+    dispatch({ type: DELETE_TODO, payload: id });
   } catch (error) {
     handleErrors(error);
   }

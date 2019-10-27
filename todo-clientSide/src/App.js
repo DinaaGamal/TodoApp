@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import TodoForm from "./components/TodoForm/TodoForm";
 import TodoList from "./components/TodoList/TodoList";
 import Paper from "@material-ui/core/Paper";
@@ -6,21 +6,27 @@ import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import { fetchTodos } from "./store/actions/fetchTodos";
 import { deleteTodo } from "./store/actions/deleteTodo";
-class App extends Component {
+import { addTodo } from "./store/actions/addTodo";
+import { editTodo } from "./store/actions/editTodo";
+class App extends PureComponent {
   componentDidMount() {
     this.props.fetchTodos();
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.todos.length < this.props.todos.length) {
-      this.props.fetchTodos();
-    }
   }
 
   removeTodo = id => {
     this.props.deleteTodo(id);
   };
 
+  addTodo = formValues => {
+    this.props.addTodo(formValues);
+  };
+
+  editTodo = (id, value) => {
+    this.props.editTodo(id, value);
+  };
+
   render() {
+    console.log("app render");
     const { todos } = this.props;
     return (
       <Paper
@@ -33,8 +39,8 @@ class App extends Component {
         elevation={0}>
         <Grid container justify='center' style={{ marginTop: "1rem" }}>
           <Grid item xs={11} md={8} lg={4}>
-            <TodoForm />
-            <TodoList removeTodo={this.removeTodo} todos={todos} />
+            <TodoForm addTodo={this.addTodo} />
+            <TodoList editTodo={this.editTodo} removeTodo={this.removeTodo} todos={todos} />
           </Grid>
         </Grid>
       </Paper>
@@ -43,10 +49,10 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-  return { todos: state.fetchTodosReducer };
+  return { todos: Object.values(state.combined) };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchTodos, deleteTodo }
+  { fetchTodos, deleteTodo, addTodo, editTodo }
 )(App);

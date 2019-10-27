@@ -3,6 +3,7 @@ import { TextField, Paper } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form";
 
 class EditTodoForm extends Component {
+  // should also be function component
   //text field//
   renderTextField = ({ label, input, meta: { touched, invalid, error }, ...custom }) => (
     <TextField
@@ -16,9 +17,9 @@ class EditTodoForm extends Component {
     />
   );
   //submit//
-  onFormSubmit = formValues => {
+  onFormSubmit = async formValues => {
     console.log(this.props.id, formValues.updatedTodo);
-    this.props.editTodo(this.props.id, formValues.updatedTodo);
+    await this.props.editTodo(this.props.id, formValues.updatedTodo);
     this.props.reset();
     this.props.toggleEditForm();
   };

@@ -3,12 +3,13 @@ import swaggerUI from "swagger-ui-express";
 import * as swaggerDocument from "./swagger.json";
 import * as config from "./config/config.json";
 import { TodoResource } from "./resources/todoResource";
-
+import cors from "cors";
 const exp: Application = express();
 
 const bodyParser = require("body-parser");
 exp.use(bodyParser.urlencoded({ extended: false }));
 exp.use(bodyParser.json());
+exp.use(cors());
 // exp.use((req:Request,res:Response,next:NextFunction)=>{
 //     res.header("Access-Control-Allow-Origin","*");
 //     res.header("Access-Control-Allow-Headers","*");

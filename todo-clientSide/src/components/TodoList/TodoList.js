@@ -1,43 +1,33 @@
-import React, { Component } from "react";
-// import { fetchTodos } from "../../store/actions/fetchTodos";
-// import { deleteTodo } from "../../store/actions/deleteTodo";
-import TodoItem from "../TodoItem/TodoItem";
-// import { connect } from "react-redux";
+import React from "react";
+import TodoItem from "../../containers/TodoItem/TodoItem";
 import { Paper, List } from "@material-ui/core";
 
-class TodoList extends Component {
-  // componentDidMount() {
-  //   this.props.fetchTodos();
-  // }
-
-  // removeTodo = id => {
-  //   this.props.deleteTodo(id);
-  // };
-
-  render() {
-    const { todos, removeTodo } = this.props;
-    if (todos.length) {
-      return (
-        <Paper>
-          <List>
-            {todos.map(todo => {
-              return (
-                <React.Fragment key={todo.id}>
-                  <TodoItem removeTodo={removeTodo} todo={todo.todo} id={todo.id} date={todo.date} />
-                </React.Fragment>
-              );
-            })}
-          </List>
-        </Paper>
-      );
-    } else {
-      return <div>Loading...</div>;
-    }
+function TodoList(props) {
+  const { todos, removeTodo, editTodo } = props;
+  if (todos.length) {
+    console.log("List render");
+    return (
+      <Paper>
+        <List>
+          {todos.map(todo => {
+            return (
+              <React.Fragment key={todo.id}>
+                <TodoItem
+                  editTodo={editTodo}
+                  removeTodo={removeTodo}
+                  todo={todo.todo}
+                  id={todo.id}
+                  date={todo.date}
+                />
+              </React.Fragment>
+            );
+          })}
+        </List>
+      </Paper>
+    );
+  } else {
+    return <div>Loading...</div>;
   }
 }
 
 export default TodoList;
-// export default connect(
-//   mapStateToProps,
-//   { fetchTodos, deleteTodo }
-// )(TodoList);

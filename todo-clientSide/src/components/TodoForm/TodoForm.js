@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { TextField, Paper } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form";
-import { addTodo } from "../../store/actions/addTodo";
 import Moment from "moment";
 import uuid from "uuid/v4";
-import { connect } from "react-redux";
 
 class TodoForm extends Component {
+  // should be functionla component but creates a bug in redux-form
   //text field//
   renderTextField = ({ label, input, meta: { touched, invalid, error }, ...custom }) => (
     <TextField
@@ -28,6 +27,7 @@ class TodoForm extends Component {
       date: Moment().format()
     };
     this.props.addTodo(todo);
+    this.props.reset();
   };
   render() {
     const { handleSubmit } = this.props;
@@ -38,20 +38,20 @@ class TodoForm extends Component {
           <div>
             <Field name='todo' component={this.renderTextField} label='Add Todo ...' />
           </div>
-          <div></div>
         </form>
       </Paper>
     );
   }
 }
-const mapStateToProps = state => {
-  return { addTodo: state.addTodoReducer };
-};
-const withForm = reduxForm({
+// const mapStateToProps = state => {
+//   return { addTodo: state.addTodoReducer };
+// };
+// const withForm =
+export default reduxForm({
   form: "reduxform"
 })(TodoForm);
 
-export default connect(
-  mapStateToProps,
-  { addTodo }
-)(withForm);
+// export default connect(
+//   mapStateToProps,
+//   { addTodo }
+// )(withForm);

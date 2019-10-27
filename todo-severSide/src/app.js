@@ -43,8 +43,7 @@ app.delete("/todoApp/todo/:id", async (req, res) => {
   try {
     let delTodo = await Todos.findOne({ id: req.params.id });
     await delTodo.remove();
-    let todos = await Todos.find();
-    return res.status(200).json(todos);
+    return res.status(200).json(delTodo);
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Something went wrong" });
@@ -52,7 +51,12 @@ app.delete("/todoApp/todo/:id", async (req, res) => {
 });
 app.patch("/todoApp/todo/:id", async (req, res) => {
   try {
-    let editTodo = await Todos.findOneAndUpdate(req.params.id, { $set: { todo: req.body.todo } });
+    let editTodo = await Todos.findOneAndUpdate(
+      { id: req.params.id },
+      { $set: { todo: req.body.todo } },
+      { new: true }
+    );
+    // let updated = await Todos.findOne({ id: req.params.id });
     return res.status(200).json(editTodo);
   } catch (error) {
     console.error(error);

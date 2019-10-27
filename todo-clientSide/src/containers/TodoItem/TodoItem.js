@@ -6,9 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import EditTodoForm from "../EditTodoForm/EditTodoForm";
-import { connect } from "react-redux";
-import { editTodo } from "../../store/actions/editTodo";
+import EditTodoForm from "../../components/EditTodoForm/EditTodoForm";
 class TodoItem extends Component {
   state = { isEditing: false, completed: false };
   toggle = () => {
@@ -17,16 +15,14 @@ class TodoItem extends Component {
   toggleTodo = () => {
     this.setState({ completed: !this.state.completed });
   };
-  editTodoItem = (id, value) => {
-    this.props.editTodo(id, value);
-  };
+
   render() {
     const { todo, id, removeTodo } = this.props;
     const { completed, isEditing } = this.state;
     return (
       <ListItem style={{ height: "64px" }}>
         {isEditing ? (
-          <EditTodoForm editTodo={this.editTodoItem} id={id} todo={todo} toggleEditForm={this.toggle} />
+          <EditTodoForm editTodo={this.props.editTodo} id={id} todo={todo} toggleEditForm={this.toggle} />
         ) : (
           <>
             <Checkbox tabIndex={-1} checked={completed} onClick={() => this.toggleTodo()} />
@@ -47,10 +43,5 @@ class TodoItem extends Component {
     );
   }
 }
-const mapStateToProps = state => {
-  return { editTodo: state.editTodoReducer };
-};
-export default connect(
-  mapStateToProps,
-  { editTodo }
-)(TodoItem);
+
+export default TodoItem;
